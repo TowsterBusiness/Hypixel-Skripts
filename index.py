@@ -60,3 +60,28 @@ for pet_name in pet_list:
                 elif pet_level == 1:
                     low_tier_min = min(low_tier_min, price)
           
+                         
+                pet_margins.append([pet_level_to_exp(rarity=auc["tier"].lower(), level=pet_level, exp=exp), price])
+
+        if low_tier_min == float('inf') or max_tier_min == float('inf'):
+            print(bcolors.FAIL + "There were no " + pet_name + "s" + bcolors.ENDC)
+            
+        # getting the line graph info
+        plot_m = (max_tier_min - low_tier_min) / (pet_level_to_exp(rarity=rarity, level=100) - pet_level_to_exp(rarity=rarity, level=1))
+        plot_b = max_tier_min - plot_m * (pet_level_to_exp(rarity=rarity, level=100))
+
+        margins = []
+        for eman in pet_margins:
+            if ((eman[0] * plot_m + plot_b) - eman[1] > 700000) and eman[1] < 20000000 and rarity == "LEGENDARY":
+                margins.append([pet_name, rarity, eman[1],  (eman[0] * plot_m + plot_b) - eman[1]])
+        
+        if len(margins) > 0:
+            # margins.sort()
+            for m in margins:
+                all_margin.append(m)
+            # print(bcolors.OKCYAN + rarity + " || " + pet_name + bcolors.ENDC)
+            # print(margins)
+
+all_margin.sort(key=lambda x: x[3])
+for marg in all_margin:
+    print(marg)
