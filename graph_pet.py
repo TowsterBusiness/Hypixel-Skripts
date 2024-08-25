@@ -51,3 +51,45 @@ for auc in auc_list:
         elif pet_level == 1:
             low_tier_min = min(low_tier_min, price)
             
+            
+                    
+        emanList.append([pet_level_to_exp(rarity=auc["tier"].lower(), level=pet_level, exp=exp), auc["starting_bid"]])
+
+if low_tier_min == float('inf') or max_tier_min == float('inf'):
+    print(bcolors.FAIL + "There were no pets of that kind" + bcolors.ENDC)
+    
+# getting the line graph info
+plot_m = (max_tier_min - low_tier_min) / (pet_level_to_exp(rarity=rarity, level=100) - pet_level_to_exp(rarity=rarity, level=1))
+plot_b = max_tier_min - plot_m * (pet_level_to_exp(rarity=rarity, level=100))
+
+fig, ax = plt.subplots(figsize=(6, 6))
+# naming the x axis
+plt.xlabel('Pet Level')
+# naming the y axis
+plt.ylabel('Price')
+# giving a title to my graph
+plt.title('Eman Graph')
+        
+# graphing the supposed scale
+if low_tier_min == float('inf'):
+    low_tier_min = 0
+ax.plot([0, pet_level_to_exp(rarity=rarity, level=100)], [low_tier_min, max_tier_min], label="Line", color="red")
+
+x_plot = []
+y_plot = []
+color_plot = []
+for eman in emanList:
+    x_plot.append(eman[0])
+    y_plot.append(eman[1])
+    if eman[1] < eman[0] * plot_m + plot_b:
+        color_plot.append('pink')
+    else:
+        color_plot.append('blue')
+        
+# plotting the points
+ax.scatter(np.array(x_plot), np.array(y_plot), c=np.array(color_plot))
+
+
+
+# function to show the plot
+plt.show()
