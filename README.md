@@ -22,6 +22,8 @@ Since it uses the hypixel api and need the auction data and not the client.
 
 # How to add on the projects 
 
+![EXP List](ss2.png)
+
 These projects are mostly not interconnected expect for the pet scripts. 
 The projects uses key inputs to move around the player for the farm program and the dancing program. 
 
